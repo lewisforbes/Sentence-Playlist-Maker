@@ -32,6 +32,7 @@ public class ResultServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         sentence = req.getParameter("sentence");
         ArrayList<String> invalidWords;
+
         if (firstAttempt) {
             playlistID = null;
             name = req.getParameter("name");
@@ -49,11 +50,13 @@ public class ResultServlet extends HttpServlet {
                 req.setAttribute("playlistID", playlistID);
                 RequestDispatcher view = req.getRequestDispatcher("result.jsp");
                 view.forward(req, resp);
+                reset();
             } else {
                 req.setAttribute("originalSentence", sentence);
                 req.setAttribute("invalidWords", invalidWords);
                 RequestDispatcher view = req.getRequestDispatcher("invalidWord.jsp");
                 view.forward(req, resp);
+                sentence = null;
             }
         }
 
@@ -61,10 +64,8 @@ public class ResultServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        if (playlistID != null) {
-            req.setAttribute("playlistID", playlistID);
-            RequestDispatcher view = req.getRequestDispatcher("result.jsp");
+        if (sentence == null) { // only happens if reset() has been called or an invalid word has been found
+            RequestDispatcher view = req.getRequestDispatcher("gohome.jsp");
             view.forward(req, resp);
             return;
         }
@@ -81,16 +82,27 @@ public class ResultServlet extends HttpServlet {
                 req.setAttribute("playlistID", playlistID);
                 RequestDispatcher view = req.getRequestDispatcher("result.jsp");
                 view.forward(req, resp);
+                reset();
             } else {
                 req.setAttribute("originalSentence", sentence);
                 req.setAttribute("invalidWords", invalidWords);
                 RequestDispatcher view = req.getRequestDispatcher("invalidWord.jsp");
                 view.forward(req, resp);
+                sentence = null;
             }
             return;
         }
 
         RequestDispatcher view = req.getRequestDispatcher("gohome.jsp");
         view.forward(req, resp);
+    }
+
+    private static void reset() {
+        name = null;
+        desc = null;
+        sentence = null;
+        playlistID = null;
+        code = null;
+        firstAttempt = true;
     }
 }
