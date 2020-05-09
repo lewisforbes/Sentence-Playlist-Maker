@@ -31,7 +31,14 @@
             <br><br>
             <label for="sentence">Amend your sentence and try again:</label><br><br>
             <textarea type ="text" id="sentence" name ="sentence" required style="resize:none" cols="50" rows="3"><% out.print(originalSentence); %></textarea>
+
             <br><br>
+
+            <input type="checkbox" id="allowDups" name="allowDups" value="allowDups">
+            <label for="allowDups">Allow duplicate tracks?</label>
+
+            <br><br>
+
             <input type="submit" value="Make Playlist">
         <br><br><br>
     </form>

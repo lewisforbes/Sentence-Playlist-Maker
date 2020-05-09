@@ -16,7 +16,7 @@
         (said no one ever apart from me when I was 15 lol)
     </h3>
     <h3>
-        This app makes a playlist containing songs whose titles make a message. and saves it to your Spotify.
+        This app makes a playlist containing songs whose titles make a message and saves it to your Spotify.
     </h3>
     <form method="post" action="result">
         <br>
@@ -33,6 +33,13 @@
             <br><br>
             <label for="sentence">Sentence:</label><br><br>
             <textarea type ="text" id="sentence" name ="sentence" required style="resize:none" cols="50" rows="3"></textarea>
+        </div>
+        <div>
+            <br><br>
+            <input type="checkbox" id="allowDups" name="allowDups" value="allowDups">
+            <label for="allowDups">Allow duplicate tracks?</label><br>
+        </div>
+        <div>
             <br><br>
             <input type="submit" value="Make Playlist">
         </div>

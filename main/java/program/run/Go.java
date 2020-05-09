@@ -16,19 +16,19 @@ public class Go {
     private static String desc;
     private static HashMap<Integer, Track> tracksHM;
 
-    public static ArrayList<String> firstAttempt(String code, String sentence, String givenName, String givenDesc) {
+    public static ArrayList<String> firstAttempt(String code, String sentence, String givenName, String givenDesc, boolean allowDuplicates) {
         name = givenName;
         desc = givenDesc;
         try {
             api = mkNewApi(code);
-            return nextAttempt(sentence);
+            return nextAttempt(sentence, allowDuplicates);
         } catch (Exception e) { }
         throw new IllegalArgumentException("Got to here in Go.go.");
     }
 
-    public static ArrayList<String> nextAttempt(String sentence) {
+    public static ArrayList<String> nextAttempt(String sentence, boolean allowDuplicates) {
         try {
-            tracksHM = GetTracks.getTracks(api, sentence);
+            tracksHM = GetTracks.getTracks(api, sentence, allowDuplicates);
             return getUnmatchedWords(tracksHM, sentence);
         } catch (Exception e) { }
         throw new IllegalArgumentException("Got here in Go.nextAttempt");

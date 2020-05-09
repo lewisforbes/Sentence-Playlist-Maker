@@ -13,9 +13,12 @@ public class GetTracks {
 
     private static int attempts;
     private static final int maxAttempts = 5;
+    private static boolean duplicatesAllowed;
+    private static HashMap<Integer, Track> output;
 
-    public static HashMap<Integer, Track> getTracks(SpotifyApi api, String sentence) {
-        HashMap<Integer, Track> output = new HashMap<>();
+    public static HashMap<Integer, Track> getTracks(SpotifyApi api, String sentence, boolean allowDups) {
+        duplicatesAllowed = allowDups;
+        output = new HashMap<>();
         String[] splitSentence = sentence.trim().split(" ");
 
         for (int i=0; i<splitSentence.length; i++) {
@@ -26,19 +29,19 @@ public class GetTracks {
     }
 
     private static Track getTrack(SpotifyApi api, String word) {
-        SearchTracksRequest searchTracksRequest = api.searchTracks(word + " ").limit(40).build();
+        SearchTracksRequest searchTracksRequest = api.searchTracks(word + " ").limit(50).build();
         try {
             // check if full name matches target word
             final Paging<Track> trackPaging = searchTracksRequest.execute();
             for (Track track : trackPaging.getItems()) {
-                if (onlyLettersEquals(track.getName(), word.split(" ")[0])) {
+                if (onlyLettersEquals(track.getName(), word.split(" ")[0]) && dupCheck(track)) {
                     return track;
                 }
             }
 
             // check if first word of track name matches target word
             for (Track track : trackPaging.getItems()) {
-                if (onlyLettersEquals(track.getName().split(" ")[0], word.split(" ")[0])) {
+                if (onlyLettersEquals(track.getName().split(" ")[0], word.split(" ")[0]) && dupCheck(track)) {
                     return track;
                 }
             }
@@ -76,4 +79,17 @@ public class GetTracks {
         return output;
     }
 
+    private static boolean dupCheck(Track track) {
+        if (duplicatesAllowed) {
+            return true;
+        }
+
+        ArrayList<Track> addedTracks = new ArrayList<>(output.values());
+        for (Track addedTrack : addedTracks) {
+            if (addedTrack.getId().equals(track.getId())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

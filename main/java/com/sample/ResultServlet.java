@@ -22,6 +22,7 @@ public class ResultServlet extends HttpServlet {
     private static String name;
     private static String desc;
     private static String sentence;
+    private static boolean allowDuplicates;
 
     private static String playlistID = null;
     private static String code;
@@ -30,7 +31,8 @@ public class ResultServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        sentence = req.getParameter("sentence");
+        sentence = req.getParameter("sentence").replace("\n", " ");
+        allowDuplicates = req.getParameter("allowDups") != null;
         ArrayList<String> invalidWords;
 
         if (firstAttempt) {
@@ -43,7 +45,7 @@ public class ResultServlet extends HttpServlet {
             view.forward(req,resp);
             firstAttempt = false;
         } else {
-            invalidWords = Go.nextAttempt(sentence);
+            invalidWords = Go.nextAttempt(sentence, allowDuplicates);
 
             if (invalidWords.size() == 0) {
                 playlistID = Go.getID();
@@ -75,7 +77,7 @@ public class ResultServlet extends HttpServlet {
 
         if (fullQuery.contains("code")) {
             code = fullQuery.substring(fullQuery.indexOf("=") + 1);
-            ArrayList<String> invalidWords = Go.firstAttempt(code, sentence, name, desc);
+            ArrayList<String> invalidWords = Go.firstAttempt(code, sentence, name, desc, allowDuplicates);
 
             if (invalidWords.size() == 0) {
                 playlistID = Go.getID();
@@ -104,5 +106,6 @@ public class ResultServlet extends HttpServlet {
         playlistID = null;
         code = null;
         firstAttempt = true;
+        allowDuplicates = false;
     }
 }
