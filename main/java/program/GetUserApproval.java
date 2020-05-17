@@ -11,9 +11,9 @@ import java.net.URI;
 
 public class GetUserApproval {
 
-    private static final String clientId = "<your client id>";
-    private static final String clientSecret = "<your client secret>";
-    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://sentence-playlist.us-east-2.elasticbeanstalk.com/result");
+    private static final String clientId = "<yours>";
+    private static final String clientSecret = "<yours>";
+    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://lewis-forbes.us-east-2.elasticbeanstalk.com/sentence/result");
 //    private static final URI redirectUri = SpotifyHttpManager.makeUri("http://localhost:8080/sentenceplaylist/result");
 
 
