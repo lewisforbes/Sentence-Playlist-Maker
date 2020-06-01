@@ -15,7 +15,7 @@ import java.util.Objects;
 public class MakePlaylist {
 
     private static final String defaultName = "My Message to You";
-    private static final String defaultDescription = "Made at bit.ly/sentenceplaylist";
+    private static final String defaultDescription = "Make another via lewisforbes.com!";
 
     public static String makePlaylist(SpotifyApi api, ArrayList<Track> tracks, String givenName, String givenDesc) {
         Objects.requireNonNull(tracks, "given tracks array is null");
